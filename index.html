@@ -78,8 +78,19 @@
         }
 
         /* ========================================================= */
-        /* 🛠️ MIAW CHATBOT UI OVERRIDES (Fixes Awkward Line Breaks)   */
+        /* 📐 MIAW CHATBOT WIDGET RESIZING & CSS OVERRIDES          */
         /* ========================================================= */
+
+        /* Target Salesforce MIAW Custom Element to expand width & height */
+        embedded-service-messaging-bootstrap {
+            --embedded-service-width: 400px !important;  
+            --embedded-service-height: 580px !important; 
+        }
+
+        .embedded-service-messaging {
+            width: 400px !important;
+            height: 580px !important;
+        }
 
         /* Force inline code tags inside the chat window to break cleanly */
         code, .embedded-service code {
@@ -94,7 +105,7 @@
             font-size: 13px !important;
         }
 
-        /* Ensure long words like NullPointerException don't break mid-letter or push dots down */
+        /* Prevent awkward word splits for long class names or exceptions */
         .embeddedServiceHelpButton, 
         .embeddedServiceLiveAgentMessagingHeader,
         .embedded-service-messaging,
@@ -104,7 +115,7 @@
             overflow-wrap: anywhere !important;
         }
 
-        /* Custom scrollbar styling for the chat window for a sleeker look */
+        /* Custom scrollbar for chat window */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -128,7 +139,7 @@
             <span class="badge">Runtime Verified</span>
         </div>
 
-        <!-- Optional Action Button -->
+        <!-- Launch Button -->
         <button class="btn-start" onclick="openChat()">Start Learning Session</button>
     </div>
 
@@ -151,14 +162,24 @@
             }
         };
 
-        // Helper function to open the chat when clicking the "Start Learning Session" button
+        // Function triggered when user clicks "Start Learning Session"
         function openChat() {
-            if (window.embeddedservice_bootstrap) {
-                embeddedservice_bootstrap.utilAPI.launchEmbeddedMessaging();
-            } else {
-                alert("Chat widget is initializing, please click the bottom right icon!");
+            try {
+                if (window.embeddedservice_bootstrap && embeddedservice_bootstrap.utilAPI) {
+                    // Force opens the MIAW Messaging container window
+                    embeddedservice_bootstrap.utilAPI.launchEmbeddedMessaging();
+                } else {
+                    console.warn("MIAW widget is still initializing...");
+                }
+            } catch (e) {
+                console.error("Error launching chat window:", e);
             }
         }
+
+        // Event listener to automatically wire up launch capabilities as soon as MIAW loads
+        window.addEventListener("onEmbeddedMessagingReady", () => {
+            console.log("Java Mentor Agent is ready for session launch!");
+        });
     </script>
     <script type='text/javascript' src='https://orgfarm-99b362e61a-dev-ed.develop.my.site.com/ESWJavaMentorWidget1783967436454/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
