@@ -2,27 +2,115 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta Tag Code Snippet from image_3928c3.png -->
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
     
     <title>Java Mentor AI Agent</title>
     
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background-color: #f4f6f9;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
         }
+
+        /* Hero / Center Card Styling */
         .card {
             text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 40px 30px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            max-width: 480px;
+            width: 90%;
+        }
+
+        .card h1 {
+            margin-top: 0;
+            color: #1a1a1a;
+            font-size: 26px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        /* Feature Badges */
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            background-color: #eef2ff;
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #c7d2fe;
+        }
+
+        /* Launch Button */
+        .btn-start {
+            background-color: #0070d2; /* Salesforce Navy Blue */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-start:hover {
+            background-color: #005fb2;
+            transform: translateY(-1px);
+        }
+
+        /* ========================================================= */
+        /* 🛠️ MIAW CHATBOT UI OVERRIDES (Fixes Awkward Line Breaks)   */
+        /* ========================================================= */
+
+        /* Force inline code tags inside the chat window to break cleanly */
+        code, .embedded-service code {
+            word-break: break-word !important;
+            white-space: pre-wrap !important;
+            display: inline-block !important;
+            padding: 2px 5px !important;
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+            border-radius: 4px !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+            font-size: 13px !important;
+        }
+
+        /* Ensure long words like NullPointerException don't break mid-letter or push dots down */
+        .embeddedServiceHelpButton, 
+        .embeddedServiceLiveAgentMessagingHeader,
+        .embedded-service-messaging,
+        [class*="message"],
+        [class*="chat"] {
+            word-wrap: break-word !important;
+            overflow-wrap: anywhere !important;
+        }
+
+        /* Custom scrollbar styling for the chat window for a sleeker look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -30,29 +118,49 @@
 
     <div class="card">
         <h1>Java Mentor AI Assistant</h1>
-        <p>Click the chat icon in the bottom right corner to start your session!</p>
+        <p>Your specialized AI mentor for mastering Core Java, DSA, and Spring Boot architecture with verified code execution.</p>
+        
+        <!-- Feature Badges -->
+        <div class="badges">
+            <span class="badge">Core Java</span>
+            <span class="badge">DSA Optimization</span>
+            <span class="badge">Spring Boot</span>
+            <span class="badge">Runtime Verified</span>
+        </div>
+
+        <!-- Optional Action Button -->
+        <button class="btn-start" onclick="openChat()">Start Learning Session</button>
     </div>
 
+    <!-- Salesforce MIAW Messaging Script -->
     <script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+        function initEmbeddedMessaging() {
+            try {
+                embeddedservice_bootstrap.settings.language = 'en_US';
 
-			embeddedservice_bootstrap.init(
-				'00DgL00000OLTnj',
-				'Java_Mentor_Widget',
-				'https://orgfarm-99b362e61a-dev-ed.develop.my.site.com/ESWJavaMentorWidget1783967436454',
-				{
-					scrt2URL: 'https://orgfarm-99b362e61a-dev-ed.develop.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
-</script>
-<script type='text/javascript' src='https://orgfarm-99b362e61a-dev-ed.develop.my.site.com/ESWJavaMentorWidget1783967436454/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+                embeddedservice_bootstrap.init(
+                    '00DgL00000OLTnj',
+                    'Java_Mentor_Widget',
+                    'https://orgfarm-99b362e61a-dev-ed.develop.my.site.com/ESWJavaMentorWidget1783967436454',
+                    {
+                        scrt2URL: 'https://orgfarm-99b362e61a-dev-ed.develop.my.salesforce-scrt.com'
+                    }
+                );
+            } catch (err) {
+                console.error('Error loading Embedded Messaging: ', err);
+            }
+        };
 
+        // Helper function to open the chat when clicking the "Start Learning Session" button
+        function openChat() {
+            if (window.embeddedservice_bootstrap) {
+                embeddedservice_bootstrap.utilAPI.launchEmbeddedMessaging();
+            } else {
+                alert("Chat widget is initializing, please click the bottom right icon!");
+            }
+        }
+    </script>
+    <script type='text/javascript' src='https://orgfarm-99b362e61a-dev-ed.develop.my.site.com/ESWJavaMentorWidget1783967436454/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
 </body>
 </html>
